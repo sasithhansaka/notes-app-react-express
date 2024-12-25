@@ -48,7 +48,7 @@ const LoginUser = asyncHandler(async (req, res) => {
 
   if(!email || !password){
    res.status(400)
-   throw new Error('fill all')
+   throw new Error('All fields are required')
   }
 
   const user =await User.findOne({email});
@@ -70,7 +70,7 @@ const LoginUser = asyncHandler(async (req, res) => {
   }
   else{
    res.status(401);
-   throw new Error('not valid')
+   throw new Error('Email or password Not valid')
   }
 
 });
