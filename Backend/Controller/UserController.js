@@ -62,7 +62,7 @@ const LoginUser = asyncHandler(async (req, res) => {
          id:user.id
        }
    },process.env.ACCESTOKN,
-   {expiresIn:'1m'}
+   {expiresIn:'30m'}
  );
  res.status(200).send({accessToken});
 
@@ -75,4 +75,9 @@ const LoginUser = asyncHandler(async (req, res) => {
 
 });
 
-export { registerUser, LoginUser };
+
+const currentUser =asyncHandler (async(req,res)=>{
+       res.send(req.user);
+})
+
+export { registerUser, LoginUser ,currentUser};

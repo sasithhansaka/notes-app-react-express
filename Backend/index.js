@@ -2,6 +2,7 @@ import express from "express";
 import db_connection from "./Config/db_connection.js";
 import errorHandler from "./MIddlewear/erorrhandler.js";
 import Userrouter from "./Routes/userRouter.js";
+import NoteRouter from "./Routes/NoteRouter.js";
 import dotenv from "dotenv";
 import cors from "cors"; 
 
@@ -15,8 +16,10 @@ app.use(express.json());
 
 db_connection();
 
-app.use("/api/users", Userrouter);
 app.use(errorHandler);
+
+app.use("/api/users", Userrouter);
+app.use("/api/Notes", NoteRouter);
 
 // app.use((err, req, res, next) => {
 //   const statusCode = res.statusCode === 200 ? 500 : res.statusCode; // Default to 500 for server errors
