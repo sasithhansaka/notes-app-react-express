@@ -42,42 +42,37 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 const LoginUser = asyncHandler(async (req, res) => {
-  const {email,password} = req.body;
+  const { email, password } = req.body;
 
-  if(!email || !password){
-   res.status(400)
-   throw new Error('All fields are required')
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("All fields are required");
   }
 
-  const user =await User.findOne({email});
+  const user = await User.findOne({ email });
 
-  if( user && (await bcrypt.compare(password,user.password))){
- 
-   const accessToken= jwt.sign({
-       user:{
-        Full_name:user.Full_name,
-         email:user.email,
-         id:user.id
-       }
-   },process.env.ACCESTOKN,
-   {expiresIn:'30m'}
- );
- res.status(200).send({accessToken});
-
-
+  if (user && (await bcrypt.compare(password, user.password))) {
+    const accessToken = jwt.sign(
+      {
+        user: {
+          Full_name: user.Full_name,
+          email: user.email,
+          id: user.id,
+        },
+      },
+      process.env.ACCESTOKN,
+      { expiresIn: "30m" }
+    );
+    res.status(200).send({ accessToken });
+  } else {
+    res.status(401);
+    throw new Error("Email or password Not valid");
   }
-  else{
-   res.status(401);
-   throw new Error('Email or password Not valid')
-  }
-
 });
 
+const currentUser = asyncHandler(async (req, res) => {
+  res.send(req.user);
+});
 
-const currentUser =asyncHandler (async(req,res)=>{
-       res.send(req.user);
-})
-
-export { registerUser, LoginUser ,currentUser};
+export { registerUser, LoginUser, currentUser };

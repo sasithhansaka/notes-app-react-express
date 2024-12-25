@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { use } from "react";
+import Add_note from "../../Components/Add_note";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -41,7 +42,7 @@ function Home() {
 
   return (
     <div>
-      
+      <Add_note/>
     </div>
   );
 }

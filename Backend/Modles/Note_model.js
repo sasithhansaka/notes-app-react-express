@@ -1,31 +1,31 @@
 import mongoose from "mongoose";
 
 const NoteSchema = mongoose.Schema(
-    {
-        title: {
-            type: String,
-            required: [true, 'Please enter a title'],
-        },
-        content: {
-            type: String,
-            required: [true, 'Please enter content'],
-        },
-        tags: {
-            type: [String], // Array of strings
-            required: [true, 'Please add at least one tag'],
-        },
-        isPinned: {
-            type: Boolean,
-            default: false, // Default value
-        },
-        // userid: {
-        //     type: mongoose.Schema.Types.ObjectId, // Reference to the User model
-        //     default: false, // Default value
-        // },
+  {
+    title: {
+      type: String,
+      required: [true, "Please enter a title"],
     },
-    {
-        timestamps: true, // Automatically adds createdAt and updatedAt fields
-    }
+    content: {
+      type: String,
+      required: [true, "Please enter content"],
+    },
+    isPinned: {
+      type: Boolean,
+      default: false,
+    },
+    userid: {
+      type:String,
+      required:[true],
+    },
+    createdOn: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
 const Note = mongoose.model("Note", NoteSchema);
