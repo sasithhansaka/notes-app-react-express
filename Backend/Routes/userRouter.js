@@ -9,6 +9,4 @@ Userrouter.post("/register", registerUser);
 Userrouter.post("/login", LoginUser);
 Userrouter.get("/currentUser",validateToken, currentUser);
 
-
-
 export default Userrouter;
