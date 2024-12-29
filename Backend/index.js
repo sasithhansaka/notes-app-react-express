@@ -5,6 +5,7 @@ import Userrouter from "./Routes/userRouter.js";
 import NoteRouter from "./Routes/NoteRouter.js";
 import dotenv from "dotenv";
 import cors from "cors"; 
+import emailRoutes from './Routes/EmailRouter.js';
 
 const app = express();
 const port = 5002;
@@ -20,6 +21,7 @@ app.use(errorHandler);
 
 app.use("/api/users", Userrouter);
 app.use("/api/Notes", NoteRouter);
+app.use('/api/emails', emailRoutes);
 
 
 
