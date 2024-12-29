@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-// import { use } from "react";
 
 function Add_note() {
   const [user, setUser] = useState(null);
@@ -25,7 +24,6 @@ function Add_note() {
           }
         );
         setUser(response.data);
-        console.log("Fetched User ID:", response.data.id); // Log user ID after fetching
       } catch (err) {
         const errorMessage = err.response
           ? err.response.data.message
@@ -47,11 +45,17 @@ function Add_note() {
   const Addnote = async (event) => {
     event.preventDefault();
 
+    if (!user) {
+      alert("User data is not loaded yet. Please try again.");
+      return;
+    }
+
     const data = {
       title,
       content,
-      userid: user.id, 
+      userId: user.id
     };
+    console.log("Request Body:", data);
 
     try {
       const response = await axios.post(
@@ -61,9 +65,14 @@ function Add_note() {
 
       alert("success");
     } catch (err) {
+      console.error("Error Details:", err);
+
       const errorMessage = err.response
-        ? err.response.data.message
-        : "An error occurred";
+        ? `Error: ${err.response.data.message}\nStatus Code: ${
+            err.response.status
+          }\nDetails: ${JSON.stringify(err.response.data, null, 2)}`
+        : `An error occurred: ${err.message}`;
+
       alert(errorMessage);
     }
   };

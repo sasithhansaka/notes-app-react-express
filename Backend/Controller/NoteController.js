@@ -3,39 +3,56 @@ import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// Make sure to load environment variables
-dotenv.config();
+// dotenv.config();
+
+const selectNotes = asyncHandler(async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    res.status(400);
+    throw new Error("userid not found");
+  }
+
+  try {
+    const notes = await Note.find({ userId });
+
+    if (!notes || notes.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "No notes found for this user",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Notes retrieved successfully",
+      data: notes,
+    });
+  } catch (err) {
+    console.error("Error fetching notes:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message || "An unexpected error occurred",
+    });
+  }
+});
 
 const createNote = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, userId } = req.body;
 
-  // Ensure title and content are provided
-  if (!title || !content) {
-    res.status(400); // Bad Request
+  if (!title || !content || !userId) {
+    res.status(400);
     throw new Error("All fields are required");
   }
 
   try {
-    // Extract token from Authorization header
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      res.status(401); // Unauthorized
-      throw new Error("No token, authorization denied");
-    }
-
-    // Decode the token and extract user information
-    const decoded = jwt.verify(token, process.env.ACCESTOKN);
-    const userId = decoded.user.id;
-
-    // Create a new note with the userId
     const newNote = await Note.create({
       title,
       content,
-      userid: userId, // Associate the note with the userId
+      userId,
     });
 
-    // Respond with success if note creation is successful
     if (newNote) {
       res.status(201).json({
         success: true,
@@ -47,10 +64,10 @@ const createNote = asyncHandler(async (req, res) => {
       throw new Error("Failed to create note");
     }
   } catch (error) {
-    console.error("Error creating note:", error);  // Log error for debugging
+    console.error("Error creating note:", error);
     res.status(500);
     throw new Error(error.message || "An unexpected error occurred");
   }
 });
 
-export { createNote };
+export { selectNotes, createNote };
