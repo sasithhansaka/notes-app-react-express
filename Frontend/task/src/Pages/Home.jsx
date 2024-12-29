@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Add_note from "../../Components/Add_note";
+import Verifedac from "../../Components/verifedac";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -9,7 +10,6 @@ function Home() {
   const [error, setError] = useState("");
   const accessToken = sessionStorage.getItem("accessToken");
 
-  // Fetch user details
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -71,6 +71,7 @@ function Home() {
       ) : (
         <div>
           <Add_note />
+          <Verifedac/>
           <h2>My Notes</h2>
           {notes.length > 0 ? (
             <ul>
@@ -89,6 +90,7 @@ function Home() {
           )}
         </div>
       )}
+      
     </div>
   );
 }

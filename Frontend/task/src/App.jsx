@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Signup from './Pages/Signup'
 import Login from './Pages/Login'
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './Pages/Home'
 
