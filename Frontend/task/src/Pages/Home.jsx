@@ -42,25 +42,28 @@ function Home() {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      
-        const data = { userId: user.id };
-
-        try {
-          const response = await axios.post(
-            "http://localhost:5002/api/Notes/get-notes",
-            data,);
-          setNotes(response.data); 
-        } catch (err) {
-          const errorMessage = err.response
-            ? err.response.data.message
-            : "An error occurred";
-          setError(errorMessage);
-        }
-      
+      console.log(user.id)
+      if (!user) return; // Ensure user exists
+  
+      const data = { userId: user.id };
+  
+      try {
+        const response = await axios.post(
+          "http://localhost:5002/api/Notes/get-notes",
+          data
+        );
+        setNotes(response.data.data); // Update to match backend structure
+      } catch (err) {
+        const errorMessage = err.response
+          ? err.response.data.message
+          : "An error occurred";
+        setError(errorMessage);
+      }
     };
-
-      fetchNotes();
+  
+    fetchNotes();
   }, [user]);
+  
 
   return (
     <div>

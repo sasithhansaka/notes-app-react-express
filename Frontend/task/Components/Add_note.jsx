@@ -43,7 +43,6 @@ function Add_note() {
   }, [accessToken]);
 
   const Addnote = async (event) => {
-    event.preventDefault();
 
     if (!user) {
       alert("User data is not loaded yet. Please try again.");

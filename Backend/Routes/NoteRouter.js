@@ -7,6 +7,6 @@ const NoteRouter = express.Router();
 
 NoteRouter.post("/add-note",createNote);
 
-NoteRouter.get("/get-notes",selectNotes)
+NoteRouter.post("/get-notes",selectNotes)
 
 export default NoteRouter;

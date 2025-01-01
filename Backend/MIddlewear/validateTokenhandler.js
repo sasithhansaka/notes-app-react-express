@@ -16,7 +16,6 @@ const validateToken = asyncHandler((req, res, next) => {
       req.user = decoded.user;
       next();
 
-      // console.log(decoded);
     });
   } else {
     res.status(401);

@@ -1,9 +1,13 @@
 import nodemailer from 'nodemailer';
 
+const verificationCodes = {};
+const codeExpiryTime = 5 * 60 * 1000; 
+
 export const sendEmail = async (req, res) => {
     const { to } = req.body; 
-
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    verificationCodes[to] = { code: verificationCode, createdAt: Date.now() };
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -34,5 +38,27 @@ export const sendEmail = async (req, res) => {
             message: 'Failed to send verification code', 
             error 
         });
+    }
+};
+
+export const verifyCode = (req, res) => {
+    const { email, code } = req.body;
+
+    if (verificationCodes[email]) {
+        const { code: storedCode, createdAt } = verificationCodes[email];
+
+        if (Date.now() - createdAt > codeExpiryTime) {
+            delete verificationCodes[email]; 
+            return res.status(400).json({ message: 'Verification code has expired.' });
+        }
+
+        if (storedCode === code) {
+            delete verificationCodes[email]; 
+            return res.status(200).json({ message: 'Verification successful!' });
+        } else {
+            return res.status(400).json({ message: 'Invalid verification code.' });
+        }
+    } else {
+        return res.status(400).json({ message: 'No verification code sent for this email.' });
     }
 };
