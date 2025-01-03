@@ -78,7 +78,7 @@ function Add_note() {
 
   return (
     <div>
-      <form onSubmit={Addnote}>
+      <form onSubmit={Addnote} className="add-note-form">
         <input
           type="text"
           value={title}

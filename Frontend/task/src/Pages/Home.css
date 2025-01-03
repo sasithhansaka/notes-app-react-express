@@ -1,0 +1,187 @@
+.notes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; 
+}
+
+.note-item {
+  width: 450px; 
+  border: 1px solid #ddd; 
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  overflow: hidden; 
+}
+
+.note-item h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.note-item p {
+  white-space: nowrap; 
+  overflow: hidden;
+  font-size: 14px; 
+}
+
+.note-item small {
+  font-size: 12px;
+  color: #666;
+}
+
+.popup {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 100;
+}
+
+.popup {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 250px;
+  z-index: 100;
+  font-family: 'Arial', sans-serif;
+}
+
+.popup h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.profile-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 15px;
+}
+
+.profile-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.popup p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.verified-badge {
+  color: #28a745;
+  background-color: #e6ffee;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.verify-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.verify-button:hover {
+  background-color: #0056b3;
+}
+
+.popup button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.popup button:hover {
+  background-color: #cc0000;
+}
+
+.add-note-button {
+  position: fixed;
+  bottom: 20px;  
+  right: 20px;   
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;  
+}
+
+.add-note-button:hover {
+  background-color: #0056b3;
+}
+
+.addnote-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.addnote-popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addnote-popup-content h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.addnote-popup-content button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.addnote-popup-content button:hover {
+  background-color: #0056b3;
+}
