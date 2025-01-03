@@ -3,7 +3,6 @@ import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-// dotenv.config();
 
 const selectNotes = asyncHandler(async (req, res) => {
   const { userId } = req.body;
@@ -70,4 +69,33 @@ const createNote = asyncHandler(async (req, res) => {
   }
 });
 
-export { selectNotes, createNote };
+const deletenote = asyncHandler(async (req, res) => {
+  const { userId, noteId } = req.body;
+
+  if (!userId || !noteId) {
+    res.status(400);
+    throw new Error("userid and noteid is required");
+  }
+
+  try {
+    const note = await Note.findOne({ _id: noteId, userId });
+
+    if (!note) {
+      res.status(404).json({
+        success: false,
+        message: "Note not found or does not belong to the user",
+      });
+      return;
+    }
+
+    await note.deleteOne();
+
+    res.status(200).send("note deleted succesfully");
+  } catch (error) {
+    console.error("Error deleting  note:", error);
+    res.status(500);
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+});
+
+export { selectNotes, createNote, deletenote };

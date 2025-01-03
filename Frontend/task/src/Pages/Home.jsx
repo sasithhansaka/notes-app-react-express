@@ -8,6 +8,7 @@ import "./Home.css";
 function Home() {
   const [user, setUser] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [showPopupProfile, setShowPopupProfile] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,11 +20,19 @@ function Home() {
   };
 
   const handleAddNoteClick = () => {
-    setShowAddNotePopup(true); 
+    setShowAddNotePopup(true);
   };
 
   const handleClosePopup = () => {
-    setShowAddNotePopup(false); 
+    setShowAddNotePopup(false);
+  };
+
+  const handleNoteClick = (note) => {
+    setSelectedNote(note);
+  };
+
+  const handleCloseNotePopup = () => {
+    setSelectedNote(null);
   };
 
   useEffect(() => {
@@ -73,12 +82,48 @@ function Home() {
         const errorMessage = err.response
           ? err.response.data.message
           : "An error occurred";
-        // setError(errorMessage);
       }
     };
 
     fetchNotes();
   }, [user]);
+
+  const handleDeleteNote = async (noteId) => {
+    if (!user) {
+      alert("User data is not loaded.");
+      return;
+    }
+
+    console.log("Deleting note with User ID:", user.id, "Note ID:", noteId);
+
+    try {
+      const response = await axios.delete(
+        "http://localhost:5002/api/Notes/delete-note",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: {
+            userId: user.id,
+            noteId: noteId,
+          },
+        }
+      );
+
+      alert("Note deleted successfully!");
+      setNotes(notes.filter((note) => note._id !== noteId));
+    } catch (err) {
+      console.error("Error Details:", err);
+
+      const errorMessage = err.response
+        ? `Error: ${err.response.data.message}\nStatus Code: ${
+            err.response.status
+          }\nDetails: ${JSON.stringify(err.response.data, null, 2)}`
+        : `An error occurred: ${err.message}`;
+
+      alert(errorMessage);
+    }
+  };
 
   return (
     <div>
@@ -114,21 +159,25 @@ function Home() {
             </div>
           )}
 
-          {/* <Add_note /> */}
+          <Add_note />
           {notes.length > 0 ? (
             <ul className="notes-container">
               {notes.map((note) => (
                 <li key={note._id} className="note-item">
+                  <button onClick={() => handleNoteClick(note)}>tttttt</button>
                   <div style={{ display: "flex" }}>
                     <h3>{note.title}</h3>
                     <button>pin</button>
                   </div>
                   <p>{note.content}</p>
+                  {/* <p>{note._id}</p> */}
                   <div style={{ display: "flex" }}>
                     <small>
                       Created: {new Date(note.createdAt).toLocaleString()}
                     </small>
-                    <button>delete</button>
+                    <button onClick={() => handleDeleteNote(note._id)}>
+                      Delete
+                    </button>
                     <button>update</button>
                   </div>
                 </li>
@@ -147,8 +196,21 @@ function Home() {
       {showAddNotePopup && (
         <div className="addnote-popup">
           <div className="addnote-popup-content">
-            <Add_note/>
-            <button type="button" onClick={handleClosePopup}>Close</button>
+            <Add_note />
+            <button type="button" onClick={handleClosePopup}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {selectedNote && (
+        <div className="note-detail-popup">
+          <div className="note-detail-popup-content">
+            <h3>{selectedNote.title}</h3>
+            <p>{selectedNote.content}</p>
+            <p>Created: {new Date(selectedNote.createdAt).toLocaleString()}</p>
+            <button onClick={handleCloseNotePopup}>Close</button>
           </div>
         </div>
       )}
