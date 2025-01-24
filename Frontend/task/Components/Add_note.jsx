@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import "./Addnote.css";
 
 function Add_note() {
   const [user, setUser] = useState(null);
@@ -61,30 +62,33 @@ function Add_note() {
 
       alert("note added ");
     } catch (err) {
-      console.error(
-        "Error fetching notes:",
-        err.response?.data?.message || err.message
-      );
+      const errorMessage = err.response
+        ? err.response.data.message
+        : "An error occurred";
+      alert(errorMessage);
     }
-    
   };
 
   return (
     <div>
       <form onSubmit={Addnote} className="add-note-form">
+        <p>ADD YOUR NOTE</p>
+        <label>TITLE</label>
         <input
           type="text"
           value={title}
           onChange={handle_title}
-          placeholder="title"
+          placeholder="ADD TITLE HERE"
         ></input>
-        <input
-          type="text"
-          placeholder="content"
+        <label>CONTENT</label>
+        <textarea
+          placeholder="Add more content here..."
           onChange={handle_content}
           value={content}
-        ></input>
-        <button type="submit">add note</button>
+          rows="5" // Adjust the rows for the height of the textarea
+          cols="30" // Optional: adjust the width
+        ></textarea>
+        <button type="submit">ADD NOTE</button>
       </form>
     </div>
   );

@@ -197,7 +197,7 @@ function Home() {
             </div>
 
             <div className="note-calender-div">
-              <div className="calendar-container">
+              {/* <div className="calendar-container">
                 <div className="calendar-header">
                   <button onClick={goToPreviousMonth}>&lt;</button>
                   <h2>
@@ -226,12 +226,12 @@ function Home() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </div> */}
+              <Add_note/>
             </div>
           </div>
         </div>
 
-        <Add_note />
 
         <h2 className="Note-title">MY NOTES</h2>
       </div>

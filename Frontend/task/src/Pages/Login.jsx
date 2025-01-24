@@ -35,7 +35,7 @@ function Login() {
       const { accessToken } = response.data;
 
       sessionStorage.setItem("accessToken", accessToken);
-      navigate("/dashbord");
+      navigate("/");
 
       console.log(accessToken);
       // sessionStorage.setItem("accessToken", accessToken);
