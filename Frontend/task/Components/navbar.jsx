@@ -3,11 +3,17 @@ import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const onProfileClick =()=>{
-       navigate("/login");
-  }
+  const accessToken = sessionStorage.getItem("accessToken");
+
+  const onProfileClick = () => {
+    if (!accessToken) {
+      navigate("/login");
+    } else {
+      navigate("/profile");
+    }
+  };
   return (
     <nav className="navbar">
       <div className="navbar-logo">Notes App</div>
