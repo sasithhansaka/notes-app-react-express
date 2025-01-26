@@ -304,11 +304,12 @@ body{
 }
 
 .note-add-calender-div .note-add{
-  width: 450px;
-  height: 80px;
+  width: 100px;
+  height: 40px;
   background-color: #35343471;
-  border-radius: 30px;
-  border: 1px solid #ffffff;
+  border: 1px solid #ffffff38;
+  border-radius: 10px;
+  margin-top: 30px;
 }
 
 .note-calender-div{

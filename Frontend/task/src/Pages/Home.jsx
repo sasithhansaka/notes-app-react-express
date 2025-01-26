@@ -150,7 +150,6 @@ function Home() {
 
       console.log("note deleted", response.data);
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteid));
-
     } catch (err) {
       console.error(
         "Error fetching notes:",
@@ -192,8 +191,16 @@ function Home() {
             </div>
           </div>
           <div className="note-add-calender-div">
-            <div className="note-add">
-              <p>ADD NOTE</p>
+            <div style={{ display: "flex", gap: "5px" }}>
+              <div className="note-add">
+                <p>ADD NOTE</p>
+              </div>
+              <div className="note-add">
+                <p>ADD NOTE</p>
+              </div>
+              <div className="note-add">
+                <p>ADD NOTE</p>
+              </div>
             </div>
 
             <div className="note-calender-div">
@@ -227,11 +234,10 @@ function Home() {
                   </div>
                 </div>
               </div> */}
-              <Add_note/>
+              <Add_note />
             </div>
           </div>
         </div>
-
 
         <h2 className="Note-title">MY NOTES</h2>
       </div>

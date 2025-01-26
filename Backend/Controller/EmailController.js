@@ -1,19 +1,46 @@
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
 
-const verificationCodes = {};
-const codeExpiryTime = 5 * 60 * 1000;
+// const sendEmail = async (req, res, next) => {
+//   const { to } = req.body;
+
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: process.env.EMAIL,
+//       pass: process.env.EMAIL_PASSWORD,
+//     },
+//   });
+
+//   const mailOptions = {
+//     from: process.env.EMAIL,
+//     to: to,
+//     subject: "",
+//     text: ``,
+//   };
+
+//   try {
+//     const info = await transporter.sendMail(mailOptions);
+//     console.log("Email sent:", info.response);
+
+//     res.status(200).json({
+//       message: "gmail sent successfully!",
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+
+
+// export { sendEmail };
+
+import nodemailer from 'nodemailer';
 
 const sendEmail = async (req, res, next) => {
   const { to } = req.body;
 
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString();
-
-  verificationCodes[to] = { code: verificationCode, createdAt: Date.now() };
-
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
@@ -22,48 +49,29 @@ const sendEmail = async (req, res, next) => {
 
   const mailOptions = {
     from: process.env.EMAIL,
-    to: to,
-    subject: "Your Verification Code",
-    text: `Your verification code is: ${verificationCode}`,
+    to: to, 
+    subject: 'Profile Upgrade to Pro Version', // Subject of the email
+    text: `Dear user, 
+           You have successfully upgraded your profile to the Pro version. 
+           Enjoy the enhanced features and benefits! 
+           Thank you for using our service.`,
+    html: `<p>Dear user,</p>
+           <p>You have successfully upgraded your profile to the <strong>Pro version</strong>.</p>
+           <p>Enjoy the enhanced features and benefits!</p>
+           <p>Thank you for using our service.</p>`, 
   };
 
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
+    console.log('Email sent:', info.response);
 
     res.status(200).json({
-      message: "Verification code sent successfully!",
-      code: verificationCode,
+      message: 'Email sent successfully!',
     });
   } catch (err) {
+    console.error('Error sending email:', err);
     next(err);
   }
 };
 
-const verifyCode = (req, res) => {
-  const { email, code } = req.body;
-
-  if (verificationCodes[email]) {
-    const { code: storedCode, createdAt } = verificationCodes[email];
-
-    if (Date.now() - createdAt > codeExpiryTime) {
-      delete verificationCodes[email];
-      return res
-        .status(400)
-        .json({ message: "Verification code has expired." });
-    }
-
-    if (storedCode === code) {
-      delete verificationCodes[email];
-      return res.status(200).json({ message: "Verification successful!" });
-    } else {
-      return res.status(400).json({ message: "Invalid verification code." });
-    }
-  } else {
-    return res
-      .status(400)
-      .json({ message: "No verification code sent for this email." });
-  }
-};
-
-export { sendEmail, verifyCode };
+export { sendEmail };
