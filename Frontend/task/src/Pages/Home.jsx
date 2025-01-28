@@ -174,7 +174,9 @@ function Home() {
               <p>
                 Manage Your Notes App is a versatile and easy-to-use tool
                 designed for users who want to organize, store, and access their
-                personal notes efficiently,Create and edit notes.
+                personal notes efficiently,Create and edit notes. Whether you're
+                jotting down ideas, managing a to-do list, or keeping track of
+                personal or professional information.
               </p>
             </div>
             <div className="manage-advertisement-note">
@@ -204,7 +206,7 @@ function Home() {
             </div>
 
             <div className="note-calender-div">
-              {/* <div className="calendar-container">
+              <div className="calendar-container">
                 <div className="calendar-header">
                   <button onClick={goToPreviousMonth}>&lt;</button>
                   <h2>
@@ -233,8 +235,8 @@ function Home() {
                     ))}
                   </div>
                 </div>
-              </div> */}
-              <Add_note />
+              </div>
+              {/* <Add_note /> */}
             </div>
           </div>
         </div>
