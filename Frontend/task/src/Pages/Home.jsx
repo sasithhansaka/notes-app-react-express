@@ -185,11 +185,12 @@ function Home() {
               <div className="hr-div"></div>
 
               <p>
-                fp is a versatile and easy-to-use tool designed for users who
-                want to organize, store,
+                Manage Your Notes App is a versatile and easy-to-use tool
+                designed for users who want to organize, store, and access their
+                personal notes efficiently,Create and edit notes.
               </p>
 
-              <p>#tive #tie #tiy </p>
+              <h5>#tive #tie #tiy </h5>
             </div>
           </div>
           <div className="note-add-calender-div">
@@ -197,7 +198,7 @@ function Home() {
               <div className="note-add">
                 <p>ADD NOTE</p>
               </div>
-              <div className="note-add">
+              <div className="note-add" style={{backgroundColor:'#89eb9071'}}>
                 <p>ADD NOTE</p>
               </div>
               <div className="note-add">
