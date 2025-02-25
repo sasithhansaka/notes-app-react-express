@@ -1,11 +1,13 @@
-import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-import User from "../Modles/UserModel.js";
+// import asyncHandler from "express-async-handler";
+// import jwt from "jsonwebtoken";
+// import bcrypt from "bcrypt";
+// import dotenv from "dotenv";
+import { hash } from "bcrypt";
+import HttpStatus from "../constants/HttpStatus.js";
+import UserModel from "../Modles/User.model.js";
 
-const registerUser = asyncHandler(async (req, res, next) => {
-  const { Full_name, email, password } = req.body;
+const registerUser = async (req, res, next) => {
+  const { password, ...userData } = req.body;
 
   if (!Full_name || !email || !password) {
     res.status(400).json({
@@ -14,25 +16,26 @@ const registerUser = asyncHandler(async (req, res, next) => {
     });
   }
 
-  const userExists = await User.findOne({ email });
+  const userExists = await UserModel.findOne({ email: userData.email });
+
   if (userExists) {
-    res.status(400).json({
+    return res.status(HttpStatus.BAD_REQUEST).json({
       success: false,
       message: "Email is already registered",
     });
   }
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  console.log("Hashed Password:", hashedPassword);
+  // const saltRounds = 10;
+  // const hashedPassword = await bcrypt.hash(password, saltRounds);
+  // console.log("Hashed Password:", hashedPassword);
 
   try {
-    const newUser = await User.create({
-      Full_name,
-      email,
-      password: hashedPassword,
+    const newUser = await UserModel.create({
+      ...userData,
+      hash:password
     });
 
+    
     res.status(200).json({
       success: true,
       message: "User registered successfully",
@@ -45,7 +48,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
 
 const LoginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
