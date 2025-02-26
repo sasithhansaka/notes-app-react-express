@@ -5,7 +5,7 @@
 import { hash } from "bcrypt";
 import HttpStatus from "../constants/HttpStatus.js";
 import UserModel from "../Modles/User.model.js";
-import { checkPassword } from "../../utils/hashUtils.js";
+import { checkPassword } from "../utils/hashUtils.js";
 
 const registerUser = async (req, res, next) => {
   const { password, ...userData } = req.body;
