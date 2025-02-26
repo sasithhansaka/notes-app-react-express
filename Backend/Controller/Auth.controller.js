@@ -5,10 +5,10 @@
 import { hash } from "bcrypt";
 import HttpStatus from "../constants/HttpStatus.js";
 import UserModel from "../Modles/User.model.js";
+import { checkPassword } from "../../utils/hashUtils.js";
 
 const registerUser = async (req, res, next) => {
   const { password, ...userData } = req.body;
-
 
   const userExists = await UserModel.findOne({ email: userData.email });
 
@@ -19,74 +19,125 @@ const registerUser = async (req, res, next) => {
     });
   }
 
-  // const saltRounds = 10;
-  // const hashedPassword = await bcrypt.hash(password, saltRounds);
-  // console.log("Hashed Password:", hashedPassword);
-
   try {
     const newUser = await UserModel.create({
       ...userData,
-      hash:password
+      hash: password,
     });
 
     const { access_token, refresh_Token } = issueJwt(
       newUser._id,
-      newUser.Full_name,
+      newUser.Full_name
     );
 
-    
-    res.status(200).json({
+    res.cookie("accessToken", access_token, {
+      httpOnly: true,
+      maxAge: 900000,
+      sameSite: "Strict",
+      secure: true,
+    });
+
+    res.cookie("refreshToken", refresh_Token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "Strict",
+      secure: true,
+    });
+
+    res.status(HttpStatus.CREATED).json({
       success: true,
       message: "User registered successfully",
-      user: {
-        _id: newUser.id,
-        Full_name: newUser.Full_name,
-        email: newUser.email,
-      },
     });
   } catch (err) {
     next(err);
   }
 };
 
-const LoginUser = asyncHandler(async (req, res, next) => {
+const LoginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    res.status(400).json({
+  let user;
+  user = await UserModel.findOne({ email });
+
+  if (!user) {
+    return res.status(HttpStatus.UNAUTHORIZED).json({
       success: false,
-      message: "all fields required.",
+      message: "invalid email or password",
     });
   }
 
-  const user = await User.findOne({ email });
-
   try {
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const accessToken = jwt.sign(
-        {
-          user: {
-            Full_name: user.Full_name,
-            email: user.email,
-            id: user.id,
-          },
-        },
-        process.env.ACCESTOKN
-      );
-      res.status(200).send({ accessToken });
-    } else {
-      res.status(400).json({
-        message: "Email or password Not valid",
-        success: false,
-      });
+    const ismatch = checkPassword(password, user.salt, user.hash);
+
+    if (!ismatch) {
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ message: "Invalid password" });
     }
+
+    const { access_token, refresh_Token } = issueJwt(
+      newUser._id,
+      newUser.Full_name
+    );
+
+    res.cookie("accessToken", access_token, {
+      httpOnly: true,
+      maxAge: 900000,
+      sameSite: "Strict",
+      secure: true,
+    });
+
+    res.cookie("refreshToken", refresh_Token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "Strict",
+      secure: true,
+    });
+
+    res.status(HttpStatus.OK).json({ success: true, data: user });
   } catch (err) {
     next(err);
   }
-});
 
-const currentUser = asyncHandler(async (req, res) => {
-  res.send(req.user);
-});
+  // try {
+  //   if (user && (await bcrypt.compare(password, user.password))) {
+  //     const accessToken = jwt.sign(
+  //       {
+  //         user: {
+  //           Full_name: user.Full_name,
+  //           email: user.email,
+  //           id: user.id,
+  //         },
+  //       },
+  //       process.env.ACCESTOKN
+  //     );
+  //     res.status(200).send({ accessToken });
+  //   } else {
+  //     res.status(400).json({
+  //       message: "Email or password Not valid",
+  //       success: false,
+  //     });
+  //   }
+  // } catch (err) {
+  //   next(err);
+  // }
+};
 
-export { registerUser, LoginUser, currentUser };
+// const currentUser = asyncHandler(async (req, res) => {
+//   res.send(req.user);
+// });
+
+const logout = (req, res, next) => {
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    sameSite: "Strict",
+    secure: true,
+  });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    sameSite: "Strict",
+    secure: true,
+  });
+};
+
+export { registerUser, LoginUser, logout };

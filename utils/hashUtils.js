@@ -2,15 +2,21 @@ import { Schema } from "mongoose";
 import crypto from "node:crypto";
 
 const hashpassword = (password) => {
-    const salt = crypto.randomBytes(32).toString("hex");
+  const salt = crypto.randomBytes(32).toString("hex");
   const hash = crypto
     .pbkdf2Sync(password, salt, 10000, 64, "RSA-SHA1")
     .toString("hex");
 
-   return {salt,hash}
+  return { salt, hash };
 };
 
-const checkPassword = (password, salt, hash) => {};
+const checkPassword = (password, salt, hash) => {
+  const validatedHashed = crypto
+    .pbkdf2Sync(password, salt, 10000, 64, "RSA-SHA1")
+    .toString("hex");
+
+  return hash === validatedHashed;
+};
 
 const applyPasswordValidatingAndHashing = (Schema) => {
   Schema.pre("save", function (next) {

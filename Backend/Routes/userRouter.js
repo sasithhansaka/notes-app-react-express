@@ -1,12 +1,12 @@
 import express from "express";
-import { registerUser, LoginUser, currentUser } from "../Controller/UserController.js";
+import { registerUser, LoginUser, logout  } from "../Controller/UserController.js";
 import validateToken from "../MIddlewear/validateTokenhandler.js";
 
 
-const Userrouter = express.Router();
+const UserRouter = express.Router();
 
-Userrouter.post("/register", registerUser);
-Userrouter.post("/login", LoginUser);
-Userrouter.get("/currentUser",validateToken, currentUser);
+UserRouter.post("/register", registerUser);
+UserRouter.post("/login", LoginUser);
+UserRouter.get("/logout",logout);
 
-export default Userrouter
+export default UserRouter;

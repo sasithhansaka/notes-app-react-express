@@ -1,7 +1,8 @@
 import express from "express";
 import db_connection from "./Config/db_connection.js";
+
 import errorHandler from "./MIddlewear/erorrhandler.js";
-import Userrouter from "./Routes/userRouter.js";
+import UserRouter from "./Routes/userRouter.js";
 import NoteRouter from "./Routes/NoteRouter.js";
 import dotenv from "dotenv";
 import cors from "cors";
