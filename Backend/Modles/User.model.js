@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { applyPasswordValidatingAndHashing } from "../../utils/hashUtils.js";
 
 const { Schema, model } = mongoose;
 
@@ -18,11 +19,6 @@ const UserSchema = new Schema(
       trim: true,
       match: [email_format, "invalid email formats"],
     },
-    password: {
-      type: String,
-      required: [true, "please enter password"],
-      minlength: [6, "Password must be at least 6 characters"],
-    },
     hash: {
       type: String,
       required: true,
@@ -35,10 +31,10 @@ const UserSchema = new Schema(
       default: Date.now,
     },
   },
-  {
-    timestamps: true,
-  }
+
 );
+
+applyPasswordValidatingAndHashing(UserSchema);
 
 const UserModel = model("User", UserSchema);
 

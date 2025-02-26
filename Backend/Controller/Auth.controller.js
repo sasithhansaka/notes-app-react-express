@@ -9,12 +9,6 @@ import UserModel from "../Modles/User.model.js";
 const registerUser = async (req, res, next) => {
   const { password, ...userData } = req.body;
 
-  if (!Full_name || !email || !password) {
-    res.status(400).json({
-      success: false,
-      message: "All fields are required",
-    });
-  }
 
   const userExists = await UserModel.findOne({ email: userData.email });
 
@@ -34,6 +28,11 @@ const registerUser = async (req, res, next) => {
       ...userData,
       hash:password
     });
+
+    const { access_token, refresh_Token } = issueJwt(
+      newUser._id,
+      newUser.Full_name,
+    );
 
     
     res.status(200).json({
