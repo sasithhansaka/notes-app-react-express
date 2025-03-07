@@ -1,7 +1,4 @@
-// import asyncHandler from "express-async-handler";
-// import jwt from "jsonwebtoken";
-// import bcrypt from "bcrypt";
-// import dotenv from "dotenv";
+
 import { hash } from "bcrypt";
 import HttpStatus from "../constants/HttpStatus.js";
 import UserModel from "../Modles/User.model.js";

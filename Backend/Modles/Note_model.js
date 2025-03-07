@@ -1,19 +1,17 @@
 import mongoose from "mongoose";
 
-const NoteSchema = mongoose.Schema(
+const {Schema,model} = mongoose;
+
+const NoteSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Please enter a title"],
+      required: [true, "title is required"],
       maxlength: [25, "Title cannot exceed 100 characters"],
     },
     content: {
       type: String,
       required: [true, "Please enter content"],
-    },
-    isPinned: {
-      type: Boolean,
-      default: false,
     },
     userId: {
       type: String,
@@ -24,11 +22,8 @@ const NoteSchema = mongoose.Schema(
       default: Date.now,
     },
   },
-  {
-    timestamps: true,
-  }
 );
 
-const Note = mongoose.model("Note", NoteSchema);
+const NoteModel = model("Note", NoteSchema);
 
-export default Note;
+export default NoteModel;

@@ -7,21 +7,10 @@ import UserRouter from "./Routes/userRouter.js";
 import NoteRouter from "./Routes/NoteRouter.js";
 import emailRoutes from "./Routes/EmailRouter.js";
 
-import dotenv from "dotenv";
-// import cors from "cors";
-
 const app = express();
-// const port = 5002;
 
 app.use(express.json());
 app.use(cookieParser());
-
-// dotenv.config();
-// app.use(express.json());
-
-// db_connection();
-
-// app.use(errorHandler);
 
 app.use("/api/users", UserRouter);
 app.use("/api/Notes", NoteRouter);

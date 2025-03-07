@@ -1,40 +1,5 @@
-// import nodemailer from "nodemailer";
-
-// const sendEmail = async (req, res, next) => {
-//   const { to } = req.body;
-
-//   const transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//       user: process.env.EMAIL,
-//       pass: process.env.EMAIL_PASSWORD,
-//     },
-//   });
-
-//   const mailOptions = {
-//     from: process.env.EMAIL,
-//     to: to,
-//     subject: "",
-//     text: ``,
-//   };
-
-//   try {
-//     const info = await transporter.sendMail(mailOptions);
-//     console.log("Email sent:", info.response);
-
-//     res.status(200).json({
-//       message: "gmail sent successfully!",
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-
-
-// export { sendEmail };
-
 import nodemailer from 'nodemailer';
+import HttpStatus from '../constants/HttpStatus';
 
 const sendEmail = async (req, res, next) => {
   const { to ,noteTitle,noteContent } = req.body;
@@ -66,11 +31,11 @@ const sendEmail = async (req, res, next) => {
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
 
-    res.status(200).json({
+    res.status(HttpStatus.OK).json({
       message: 'Email sent successfully!',
+      success: true,
     });
   } catch (err) {
-    console.error('Error sending email:', err);
     next(err);
   }
 };
