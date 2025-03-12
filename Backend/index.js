@@ -1,14 +1,16 @@
 import express from "express";
-import db_connection from "./Config/db_connection.js";
+import connectDB from "./Config/db_connection.js";
 import cookieParser from "cookie-parser";
-import errorHandler from "./MIddlewear/erorrhandler.js";
+import errorHandler from "./MIddlewear/erorrhandler.middlewear.js";
+import dotenv from 'dotenv';
 
-import UserRouter from "./Routes/userRouter.js";
-import NoteRouter from "./Routes/NoteRouter.js";
-import emailRoutes from "./Routes/EmailRouter.js";
+import UserRouter from "./Routes/user.routes.js";
+import NoteRouter from "./Routes/note.routes.js";
+import emailRoutes from "./Routes/email.routes.js";
 
 const app = express();
 
+dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 
@@ -19,7 +21,6 @@ app.use("/api/emails", emailRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
-
 
 app.use(errorHandler);
 

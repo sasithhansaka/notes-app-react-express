@@ -1,10 +1,10 @@
 import express from 'express';
 
-import { sendEmail} from '../Controller/EmailController.js';
-import { validateEmail } from "../MIddlewear/email.middlwear.js";
+import { sendEmail} from '../Controller/Email.controller.js';
+import valideteEmail from "../MIddlewear/email.middlwear.js";
 
 const router = express.Router();
 
-router.post('/send-email',validateEmail, sendEmail);
+router.post('/send-email',valideteEmail, sendEmail);
 
 export default router;

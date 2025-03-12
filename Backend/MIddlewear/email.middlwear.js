@@ -1,7 +1,8 @@
 
 // import HttpStatus from 'http-status-codes';
+import HttpStatus from "../constants/HttpStatus.js";
 
-const valideEmail = (req,res,next) =>{
+const valideteEmail = (req,res,next) =>{
     const {to ,noteTitle,noteContent }  = req.body;
 
     if(!to || !noteTitle || !noteContent){
@@ -14,4 +15,4 @@ const valideEmail = (req,res,next) =>{
     next();
 }
 
-export default valideEmail;
+export default valideteEmail;

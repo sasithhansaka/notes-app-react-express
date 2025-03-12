@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import HttpStatus from '../constants/HttpStatus';
+import HttpStatus from '../constants/HttpStatus.js';
 
 const sendEmail = async (req, res, next) => {
   const { to ,noteTitle,noteContent } = req.body;

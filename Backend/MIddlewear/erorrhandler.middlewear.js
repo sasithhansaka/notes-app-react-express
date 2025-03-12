@@ -1,4 +1,4 @@
-import HttpStatus from "../constants/httpStatus.js";
+import HttpStatus from "../constants/HttpStatus.js";
 
 const errorHandler = (err, req, res, next) => {
   console.log(err.stack);
