@@ -1,8 +1,7 @@
-
-import { hash } from "bcrypt";
 import HttpStatus from "../constants/HttpStatus.js";
 import UserModel from "../Modles/User.model.js";
 import { checkPassword } from "../utils/hashUtils.js";
+import issueJwt from "../utils/jwtUtils.js";
 
 const registerUser = async (req, res, next) => {
   const { password, ...userData } = req.body;
@@ -73,8 +72,8 @@ const LoginUser = async (req, res, next) => {
     }
 
     const { access_token, refresh_Token } = issueJwt(
-      newUser._id,
-      newUser.Full_name
+      user._id,
+      user.Full_name
     );
 
     res.cookie("accessToken", access_token, {
@@ -96,28 +95,7 @@ const LoginUser = async (req, res, next) => {
     next(err);
   }
 
-  // try {
-  //   if (user && (await bcrypt.compare(password, user.password))) {
-  //     const accessToken = jwt.sign(
-  //       {
-  //         user: {
-  //           Full_name: user.Full_name,
-  //           email: user.email,
-  //           id: user.id,
-  //         },
-  //       },
-  //       process.env.ACCESTOKN
-  //     );
-  //     res.status(200).send({ accessToken });
-  //   } else {
-  //     res.status(400).json({
-  //       message: "Email or password Not valid",
-  //       success: false,
-  //     });
-  //   }
-  // } catch (err) {
-  //   next(err);
-  // }
+  
 };
 
 // const currentUser = asyncHandler(async (req, res) => {
