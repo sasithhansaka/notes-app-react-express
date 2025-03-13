@@ -1,32 +1,17 @@
-import { Schema } from "mongoose";
 import crypto from "node:crypto";
 
+// Hash the password with a randomly generated salt
 const hashpassword = (password) => {
-  const salt = crypto.randomBytes(32).toString("hex");
-  const hash = crypto
-    .pbkdf2Sync(password, salt, 10000, 64, "RSA-SHA1")
-    .toString("hex");
+  const salt = crypto.randomBytes(32).toString("hex"); // Generate salt
+  const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex"); // Hash password
 
   return { salt, hash };
 };
 
+// Check if entered password matches the stored hash
 const checkPassword = (password, salt, hash) => {
-  const validatedHashed = crypto
-    .pbkdf2Sync(password, salt, 10000, 64, "RSA-SHA1")
-    .toString("hex");
-
+  const validatedHashed = crypto.pbkdf2Sync(password, salt, 10000, 64, "sha512").toString("hex");
   return hash === validatedHashed;
 };
 
-const applyPasswordValidatingAndHashing = (Schema) => {
-  Schema.pre("save", function (next) {
-    if (!this.isModified("hash")) return next();
-
-    const { hash, salt } = hashpassword(this.hash);
-    this.hash = hash;
-    this.salt = salt;
-    next();
-  });
-};
-
-export { hashpassword, checkPassword, applyPasswordValidatingAndHashing };
+export { hashpassword, checkPassword };

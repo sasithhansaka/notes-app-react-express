@@ -1,30 +1,32 @@
 import HttpStatus from "../constants/HttpStatus.js";
+import { hashpassword } from "../utils/hashUtils.js"; 
+import issueJwt from "../utils/jwtUtils.js";
 import UserModel from "../Modles/User.model.js";
 import { checkPassword } from "../utils/hashUtils.js";
-import issueJwt from "../utils/jwtUtils.js";
 
 const registerUser = async (req, res, next) => {
   const { password, ...userData } = req.body;
 
-  const userExists = await UserModel.findOne({ email: userData.email });
-
-  if (userExists) {
-    return res.status(HttpStatus.BAD_REQUEST).json({
-      success: false,
-      message: "Email is already registered",
-    });
-  }
-
   try {
+    const userExists = await UserModel.findOne({ email: userData.email });
+
+    if (userExists) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Email is already registered",
+      });
+    }
+
+    // ✅ Correct hashing before saving
+    const { hash, salt } = hashpassword(password);
+
     const newUser = await UserModel.create({
       ...userData,
-      hash: password,
+      hash,
+      salt,
     });
 
-    const { access_token, refresh_Token } = issueJwt(
-      newUser._id,
-      newUser.Full_name
-    );
+    const { access_token, refresh_Token } = issueJwt(newUser._id, newUser.Full_name);
 
     res.cookie("accessToken", access_token, {
       httpOnly: true,
@@ -49,32 +51,35 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+
 const LoginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  let user;
-  user = await UserModel.findOne({ email });
-
-  if (!user) {
-    return res.status(HttpStatus.UNAUTHORIZED).json({
-      success: false,
-      message: "invalid email or password",
-    });
-  }
-
   try {
-    const ismatch = checkPassword(password, user.salt, user.hash);
+    const user = await UserModel.findOne({ email });
 
-    if (!ismatch) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: "Invalid password" });
+    if (!user) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
-    const { access_token, refresh_Token } = issueJwt(
-      user._id,
-      user.Full_name
-    );
+    console.log("Stored Salt:", user.salt);
+    console.log("Stored Hash:", user.hash);
+    console.log("Entered Password:", password);
+
+    // ✅ Ensure password validation uses correct hash function
+    const isMatch = checkPassword(password, user.salt, user.hash);
+
+    if (!isMatch) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const { access_token, refresh_Token } = issueJwt(user._id, user.Full_name);
 
     res.cookie("accessToken", access_token, {
       httpOnly: true,
@@ -90,13 +95,17 @@ const LoginUser = async (req, res, next) => {
       secure: true,
     });
 
-    res.status(HttpStatus.OK).json({ success: true, data: user });
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "Login successful",
+      data: { id: user._id, fullName: user.Full_name, email: user.email },
+    });
   } catch (err) {
     next(err);
   }
-
-  
 };
+
+
 
 // const currentUser = asyncHandler(async (req, res) => {
 //   res.send(req.user);
