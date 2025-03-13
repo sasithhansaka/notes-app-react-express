@@ -80,9 +80,6 @@ export const authenticateUser = async (req, res, next) => {
       }
     }
   } catch (error) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: "Internal server error",
-    });
+    next(error);
   }
 };
