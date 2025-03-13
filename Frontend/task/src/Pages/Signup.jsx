@@ -21,7 +21,7 @@ function Signup() {
     navigate("/")
   }
 
-  const HandleLogin = async (event) => {
+  const Handleregister = async (event) => {
     event.preventDefault();
     const data = {
       Full_name,
@@ -30,10 +30,9 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5002/api/users/register",
-        data
-      );
+      const response = await axios.post("http://localhost:5000/api/users/register", formData, {
+        withCredentials: true,
+      });
 
       console.log(response.data);
       alert("successs");
@@ -55,7 +54,7 @@ function Signup() {
         <label>Full Name</label>
 
         <br></br>
-        <form onSubmit={HandleLogin}>
+        <form onSubmit={Handleregister}>
           <input
             type="text"
             onChange={Handle_FullName}
