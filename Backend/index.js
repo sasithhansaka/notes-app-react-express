@@ -3,12 +3,23 @@ import connectDB from "./Config/db_connection.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./MIddlewear/erorrhandler.middlewear.js";
 import dotenv from 'dotenv';
+import cors from 'cors';
+
 
 import UserRouter from "./Routes/user.routes.js";
 import NoteRouter from "./Routes/note.routes.js";
 import emailRoutes from "./Routes/email.routes.js";
-
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:5175",
+  credentials: true,
+  methods: "GET, POST, PUT, DELETE, OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
+};
+
+app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
 
 dotenv.config();
 app.use(express.json());

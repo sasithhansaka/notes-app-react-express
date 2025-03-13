@@ -22,6 +22,12 @@ function Signup() {
   }
 
   const Handleregister = async (event) => {
+
+    if(!Full_name || !email || !password){
+      alert("please fill all the fields")
+      return
+    }
+
     event.preventDefault();
     const data = {
       Full_name,
@@ -30,17 +36,19 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/users/register", formData, {
+      const response = await axios.post("http://localhost:3000/api/users/register", data, {
         withCredentials: true,
       });
 
       console.log(response.data);
       alert("successs");
+
+      navigate("/dashboard")
     } catch (err) {
-      console.error(
-        "Error fetching notes:",
-        err.response?.data?.message || err.message
-      );
+      const errorMessage = err.response
+      ? err.response.data.message
+      : "An error occurred";
+    alert(errorMessage);
     }
   };
 

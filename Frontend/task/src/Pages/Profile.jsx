@@ -8,35 +8,46 @@ function Profile() {
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        if (!accessToken) {
-          setError("Please log in to view your profile.");
-          return;
-        }
+  // useEffect(() => {
+  //   const fetchDetails = async () => {
+  //     try {
+  //       if (!accessToken) {
+  //         setError("Please log in to view your profile.");
+  //         return;
+  //       }
 
-        const response = await axios.get(
-          "http://localhost:5002/api/users/currentUser",
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        setUser(response.data);
-        console.log(response.data);
-        setError(null);
-      } catch (err) {
-        setError(
-          err.response?.data?.message || "Failed to fetch user details."
-        );
-      }
-    };
+  //       const response = await axios.get(
+  //         "http://localhost:5002/api/users/currentUser",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }
+  //       );
+  //       setUser(response.data);
+  //       console.log(response.data);
+  //       setError(null);
+  //     } catch (err) {
+  //       setError(
+  //         err.response?.data?.message || "Failed to fetch user details."
+  //       );
+  //     }
+  //   };
 
-    fetchDetails();
-  }, [accessToken]);
+  //   fetchDetails();
+  // }, [accessToken]);
 
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/api/users/logout", {}, { withCredentials: true });
+      alert("Logged out successfully");
+      navigate("/")
+    } catch (err) {
+      alert(err.response ? err.response.data.message : "Error logging out");
+    }
+  };
+
+  
   const GotoHomepage = () => {
     navigate("/dashboard");
   };
@@ -55,18 +66,15 @@ function Profile() {
         />
 
         <h1>MY ACCOUNT</h1>
-        {error ? (
-          <p style={{ color: "red" }}>{error}</p>
-        ) : user ? (
-          <div>
+        
+          {/* <div>
             <p>First Name: {user.Full_name.split(" ")[0]}</p>
             <p>Last Name: {user.Full_name.split(" ")[1]}</p>
             <p>Email: {user.email}</p>
             <button onClick={GotoHomepage}>HOME</button>
-          </div>
-        ) : (
-          <p></p>
-        )}
+          </div> */}
+          <button onClick={handleLogout}></button>
+
       </div>
     </div>
   );

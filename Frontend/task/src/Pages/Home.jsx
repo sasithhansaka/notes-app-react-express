@@ -19,58 +19,23 @@ function Home() {
     setDate(newDate);
   };
 
-  const accessToken = sessionStorage.getItem("accessToken");
+  // const accessToken = sessionStorage.getItem("accessToken");
 
   const handleProfileClick = () => {
     setShowPopupProfile(!showPopupProfile);
   };
 
   useEffect(() => {
-    const fetchDetails = async () => {
+    const fetchNotes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5002/api/users/currentUser",
+          "http://localhost:3000/api/Notes/get-notes",
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            withCredentials: true, // Ensures cookies are sent
           }
         );
-        setUser(response.data);
+
         console.log(response.data);
-      } catch (err) {
-        console.error(
-          "Error fetching notes:",
-          err.response?.data?.message || err.message
-        );
-      }
-    };
-
-    if (accessToken) {
-      fetchDetails();
-    } else {
-      // setError("Nlease log in.");
-      // setLoading(false);
-    }
-  }, [accessToken]);
-
-  
-  useEffect(() => {
-    const fetchNotes = async () => {
-      console.log(user.id);
-
-      if (!user) {
-        alert("login");
-        return;
-      }
-      const data = { userId: user.id };
-
-      try {
-        const response = await axios.post(
-          "http://localhost:5002/api/Notes/get-notes",
-          data
-        );
-
         setNotes(response.data.data);
       } catch (err) {
         console.error(
@@ -188,7 +153,6 @@ function Home() {
             </div>
 
             <div className="note-calender-div">
-              
               <Add_note />
             </div>
           </div>

@@ -18,13 +18,8 @@ const UserSchema = new Schema({
     trim: true,
     match: [email_format, "invalid email formats"],
   },
-  hash: {
-    type: String,
-    required: true,
-  },
-  salt: {
-    type: String,
-  },
+  salt: { type: String, required: true },  
+  hash: { type: String, required: true }, 
   createdOn: {
     type: Date,
     default: Date.now,

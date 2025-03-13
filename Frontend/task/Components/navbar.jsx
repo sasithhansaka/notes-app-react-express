@@ -8,11 +8,9 @@ function Navbar() {
   const accessToken = sessionStorage.getItem("accessToken");
 
   const onProfileClick = () => {
-    if (!accessToken) {
-      navigate("/login");
-    } else {
+    
       navigate("/profile");
-    }
+    
   };
   return (
     <nav className="navbar">

@@ -2,7 +2,8 @@ import Note from "../Modles/Note_model.js";
 import HttpStatus from "../constants/HttpStatus.js";
 
 const selectNotes = async (req, res, next) => {
-  const { userId } = req.body;
+  // const { userId } = req.body;
+  const { userId } = req.user._id;
 
   try {
     const notes = await Note.find({ userId });

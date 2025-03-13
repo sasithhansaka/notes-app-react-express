@@ -28,18 +28,13 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5002/api/users/login",
+        "http://localhost:3000/api/users/login",
         data
       );
 
       alert("successfully Login");
-      const { accessToken } = response.data;
-
-      sessionStorage.setItem("accessToken", accessToken);
       navigate("/dashboard");
 
-      console.log(accessToken);
-      // sessionStorage.setItem("accessToken", accessToken);
     } catch (err) {
       const errorMessage = err.response
         ? err.response.data.message
