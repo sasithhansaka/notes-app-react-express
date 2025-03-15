@@ -138,5 +138,34 @@ const logout = (req, res, next) => {
   }
 };
 
+const currentUser = async (req, res, next) => {
+    const userId = req.user._id;
 
-export { registerUser, LoginUser, logout };
+  try {
+
+    const user = await UserModel.findById(userId);
+
+    if(!user){
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "No user found",
+      });
+    }
+
+    res.status(HttpStatus.OK).json({
+      message: "User found",
+      success: true,
+      data: user,
+    });
+
+  }
+  catch(err){
+    next(err);
+  }
+
+}
+    
+
+
+
+export { registerUser, LoginUser, logout  ,currentUser };
