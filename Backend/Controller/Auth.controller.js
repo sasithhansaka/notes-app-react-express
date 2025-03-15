@@ -118,24 +118,22 @@ const LoginUser = async (req, res, next) => {
 //   res.send(req.user);
 // });
 
-const logout = (req, res, next) => {
-  try {
-    res.clearCookie("accessToken", {
-      httpOnly: true,
-      sameSite: "Strict",
-      secure: true,
-    });
+const logout = async (req, res, next) => {
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    sameSite: "Strict",
+    secure: true,
+  });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    sameSite: "Strict",
+    secure: true,
+  });
 
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      sameSite: "Strict",
-      secure: true,
-    });
-
-    res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
-    next(error);
-  }
+  res.status(HttpStatus.OK).json({
+    message: "user logout successfully",
+    success: true,
+  });
 };
 
 const currentUser = async (req, res, next) => {
