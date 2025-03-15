@@ -30,20 +30,17 @@ function Login() {
       const response = await axios.post(
         "http://localhost:3000/api/users/login",
         data,
-        { withCredentials: true } // Ensure cookies are sent and received
+        { withCredentials: true }
       );
 
-      // Log the full response to understand its structure
       console.log("Full Response:", response);
 
-      // Access tokens from the response
       const accessToken = response.data.data?.accessToken;
       const refreshToken = response.data.data?.refreshToken;
 
       console.log("Access Token:", accessToken);
       console.log("Refresh Token:", refreshToken);
 
-      // Optionally store tokens in localStorage or sessionStorage
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);

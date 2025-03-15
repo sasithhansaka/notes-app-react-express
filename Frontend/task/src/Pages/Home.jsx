@@ -15,72 +15,41 @@ function Home() {
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [monthName, setMonthName] = useState("");
 
-
-   // Function to fetch the accessToken and refreshToken from cookies
-  //  const getTokenFromCookies = () => {
-  //   // Example using 'document.cookie'. Replace with your actual cookie names if needed.
-  //   const cookies = document.cookie.split('; ');
-  //   let accessToken = '';
-  //   let refreshToken = '';
-  //   cookies.forEach(cookie => {
-  //     if (cookie.startsWith('accessToken=')) {
-  //       accessToken = cookie.split('=')[1];
-  //     }
-  //     if (cookie.startsWith('refreshToken=')) {
-  //       refreshToken = cookie.split('=')[1];
-  //     }
-  //   });
-  //   return { accessToken, refreshToken };
-  // };
-
-
-
-
-
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
-
-  // const accessToken = sessionStorage.getItem("accessToken");
 
   const handleProfileClick = () => {
     setShowPopupProfile(!showPopupProfile);
   };
 
-
   useEffect(() => {
-
     const fetchNotes = async () => {
-      console.log(document.cookie);  // To inspect the cookies
-
-
-      // const { accessToken, refreshToken } = getTokenFromCookies();
-
-      // // Log the tokens to the console
-      // console.log("Access Token:", accessToken);
-      // console.log("Refresh Token:", refreshToken);
+      console.log(document.cookie);
 
       try {
-        const response = await axios.get("http://localhost:3000/api/Notes/get-notes", {
-          withCredentials: true, 
-        });
-    
+        const response = await axios.get(
+          "http://localhost:3000/api/Notes/get-notes",
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.data.message === "No note found") {
+          return;
+        }
+
         setNotes(response.data.data);
       } catch (err) {
-        if (err.response?.status === 401) {
-          console.error("Error fetching notes: Unauthorized user. Please log in.");
-        } else if (err.response?.status === 403) {
-          console.error("Error fetching notes: Forbidden access.");
-        } else {
-          console.error("Error fetching notes:", err.response?.data?.message || err.message);
-        }
+        console.error(
+          "Error fetching notes:",
+          err.response?.data?.message || err.message
+        );
       }
     };
-    
+
     fetchNotes();
-    
-  });
-  
+  },[]);
 
   useEffect(() => {
     const month = currentDate.getMonth();
@@ -109,20 +78,22 @@ function Home() {
   };
 
   const handleDeleteNote = async (noteid) => {
-    if (!noteid || !user.id) {
-      console.log("userid ,notid not added");
+    if (!noteid) {
+      console.log("notid not added");
     }
 
     const data = {
       noteId: noteid,
-      userId: user.id,
     };
 
     try {
       console.log(data);
       const response = await axios.delete(
-        "http://localhost:5002/api/Notes/delete-note",
-        { data }
+        "http://localhost:3000/api/Notes/delete-note",
+        {
+          data: data,
+          withCredentials: true,
+        }
       );
 
       console.log("note deleted", response.data);
@@ -139,7 +110,6 @@ function Home() {
     <div>
       <Navbar onProfileClick={handleProfileClick} />
 
-      
       {/* <button className="add-note-button" onClick={handleAddNoteClick}>
       </button> */}
 
