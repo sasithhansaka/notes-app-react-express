@@ -3,13 +3,13 @@ import HttpStatus from "../constants/HttpStatus.js";
 
 const selectNotes = async (req, res, next) => {
   // const { userId } = req.body;
-  const { userId } = req.user._id;
+  const userId  = req.user._id;
 
   try {
     const notes = await Note.find({ userId });
 
     if (!notes || notes.length === 0) {
-      res.status(HttpStatus.BAD_REQUEST).json({
+      return  res.status(HttpStatus.BAD_REQUEST).json({
         success: false,
         message: "No note found",
       });
@@ -27,23 +27,30 @@ const selectNotes = async (req, res, next) => {
 };
 
 const createNote = async (req, res, next) => {
-  const{userId}=req.body;
-  const { ...Notedata } = req.body;
-
   try {
+    if (!req.user) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: "Unauthenticated user",
+      });
+    }
+
+    const userId = req.user._id;
+    const { ...noteData } = req.body;
+
     const newNote = await Note.create({
-      ...Notedata,
+      ...noteData,
       userId,
     });
 
-    if(!newNote){
-      res.status(HttpStatus.BAD_REQUEST).json({
+    if (!newNote) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
         success: false,
         message: "Note not created",
-      })
+      });
     }
 
-    res.status(HttpStatus.CREATED).json({
+    return res.status(HttpStatus.CREATED).json({
       success: true,
       message: "Note created",
       data: newNote,
@@ -54,21 +61,22 @@ const createNote = async (req, res, next) => {
   }
 };
 
+
 const deletenote = async (req, res, next) => {
-  const { userId } = req.user._id;
+  const userId = req.user._id;
   const { noteId } = req.body;
 
   try {
-    const note = await Note.find({ _id: noteId, userId });
+    const note = await Note.findOne({ _id: noteId, userId });
 
     if (!note) {
-      res.status(HttpStatus.NOT_FOUND).json({
+       return res.status(HttpStatus.NOT_FOUND).json({
         success: false,
         message: "No note found for this user for delete",
       });
     }
 
-    await note.deleteOne();
+    await note.delete();
 
     res.status(HttpStatus.OK).json({
       success: true,
