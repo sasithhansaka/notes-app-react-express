@@ -24,12 +24,11 @@ function Add_note() {
       const response = await axios.post(
         "http://localhost:3000/api/Notes/add-note",
         data,
-        { withCredentials: true } // Ensures cookies (access token) are sent
+        { withCredentials: true } 
       );
   
       console.log("Note added successfully:", response.data);
       
-      // await sendEmail();
       console.log("Email sent successfully!");
   
       setTitle("");
