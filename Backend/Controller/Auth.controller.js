@@ -17,7 +17,6 @@ const registerUser = async (req, res, next) => {
       });
     }
 
-    // ✅ Correct hashing before saving
     const { hash, salt } = hashpassword(password);
 
     const newUser = await UserModel.create({
@@ -69,7 +68,6 @@ const LoginUser = async (req, res, next) => {
     console.log("Stored Hash:", user.hash);
     console.log("Entered Password:", password);
 
-    // ✅ Ensure password validation uses correct hash function
     const isMatch = checkPassword(password, user.salt, user.hash);
 
     if (!isMatch) {
@@ -81,24 +79,33 @@ const LoginUser = async (req, res, next) => {
 
     const { access_token, refresh_Token } = issueJwt(user._id, user.Full_name);
 
-    res.cookie("accessToken", access_token, {
-      httpOnly: true,
-      maxAge: 900000,
-      sameSite: "Strict",
-      secure: true,
+     // Modified cookie settings for development environment
+     res.cookie("accessToken", access_token, {
+      httpOnly: true, 
+      maxAge: 900000, 
+      sameSite: "Lax",  // Changed from Strict to Lax for development
+      secure: false,    // Changed to false for HTTP in development
+      // path: "/"         // Explicitly set path
     });
-
+    
     res.cookie("refreshToken", refresh_Token, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: "Strict",
-      secure: true,
+      httpOnly: true, 
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      sameSite: "Lax",  // Changed from Strict to Lax for development
+      secure: false,    // Changed to false for HTTP in development
+      // path: "/"         // Explicitly set path
     });
-
+    
     res.status(HttpStatus.OK).json({
       success: true,
       message: "Login successful",
-      data: { id: user._id, fullName: user.Full_name, email: user.email },
+      data: {
+        id: user._id,
+        fullName: user.Full_name,
+        email: user.email,
+        accessToken: access_token,
+        refreshToken: refresh_Token,
+      },
     });
   } catch (err) {
     next(err);

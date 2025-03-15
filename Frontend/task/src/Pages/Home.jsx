@@ -15,6 +15,28 @@ function Home() {
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [monthName, setMonthName] = useState("");
 
+
+   // Function to fetch the accessToken and refreshToken from cookies
+  //  const getTokenFromCookies = () => {
+  //   // Example using 'document.cookie'. Replace with your actual cookie names if needed.
+  //   const cookies = document.cookie.split('; ');
+  //   let accessToken = '';
+  //   let refreshToken = '';
+  //   cookies.forEach(cookie => {
+  //     if (cookie.startsWith('accessToken=')) {
+  //       accessToken = cookie.split('=')[1];
+  //     }
+  //     if (cookie.startsWith('refreshToken=')) {
+  //       refreshToken = cookie.split('=')[1];
+  //     }
+  //   });
+  //   return { accessToken, refreshToken };
+  // };
+
+
+
+
+
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
@@ -25,28 +47,40 @@ function Home() {
     setShowPopupProfile(!showPopupProfile);
   };
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/api/Notes/get-notes",
-          {
-            withCredentials: true, // Ensures cookies are sent
-          }
-        );
 
-        console.log(response.data);
+  useEffect(() => {
+
+    const fetchNotes = async () => {
+      console.log(document.cookie);  // To inspect the cookies
+
+
+      // const { accessToken, refreshToken } = getTokenFromCookies();
+
+      // // Log the tokens to the console
+      // console.log("Access Token:", accessToken);
+      // console.log("Refresh Token:", refreshToken);
+
+      try {
+        const response = await axios.get("http://localhost:3000/api/Notes/get-notes", {
+          withCredentials: true, 
+        });
+    
         setNotes(response.data.data);
       } catch (err) {
-        console.error(
-          "Error fetching notes:",
-          err.response?.data?.message || err.message
-        );
+        if (err.response?.status === 401) {
+          console.error("Error fetching notes: Unauthorized user. Please log in.");
+        } else if (err.response?.status === 403) {
+          console.error("Error fetching notes: Forbidden access.");
+        } else {
+          console.error("Error fetching notes:", err.response?.data?.message || err.message);
+        }
       }
     };
-
+    
     fetchNotes();
-  }, [user]);
+    
+  });
+  
 
   useEffect(() => {
     const month = currentDate.getMonth();
@@ -105,8 +139,8 @@ function Home() {
     <div>
       <Navbar onProfileClick={handleProfileClick} />
 
-      {/* 
-      <button className="add-note-button" onClick={handleAddNoteClick}>
+      
+      {/* <button className="add-note-button" onClick={handleAddNoteClick}>
       </button> */}
 
       <div>
@@ -166,7 +200,7 @@ function Home() {
             <li key={note._id} className="note-item">
               <div style={{ display: "flex", gap: "170px" }}>
                 <small>
-                  {new Date(note.createdAt).toLocaleDateString("en-US", {
+                  {new Date(note.createdOn).toLocaleDateString("en-US", {
                     month: "2-digit",
                     day: "2-digit",
                     year: "2-digit",
@@ -189,12 +223,12 @@ function Home() {
 
               <div className="div-time">
                 <small>
-                  {new Date(note.createdAt).toLocaleTimeString("en-US", {
+                  {new Date(note.createdOn).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: true,
                   })}
-                  {new Date(note.createdAt).toLocaleDateString("en-US", {
+                  {new Date(note.createdOn).toLocaleDateString("en-US", {
                     weekday: "long",
                   })}
                 </small>

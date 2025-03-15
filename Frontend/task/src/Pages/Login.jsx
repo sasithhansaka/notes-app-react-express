@@ -5,20 +5,20 @@ import "./Login.css";
 
 function Login() {
   
-  const [email, Set_email] = useState("");
-  const [password, Set_password] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  const handle_email = (event) => Set_email(event.target.value);
-  const Handle_password = (event) => Set_password(event.target.value);
+  const handleEmail = (event) => setEmail(event.target.value);
+  const handlePassword = (event) => setPassword(event.target.value);
 
-  const Gotoregister= ()=>{
-    navigate("/register")
-  }
+  const goToRegister = () => {
+    navigate("/register");
+  };
 
-  const Login_user = async (event) => {
+  const loginUser = async (event) => {
     event.preventDefault();
 
     const data = {
@@ -29,12 +29,28 @@ function Login() {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/users/login",
-        data
+        data,
+        { withCredentials: true } // Ensure cookies are sent and received
       );
 
-      alert("successfully Login");
-      navigate("/dashboard");
+      // Log the full response to understand its structure
+      console.log("Full Response:", response);
 
+      // Access tokens from the response
+      const accessToken = response.data.data?.accessToken;
+      const refreshToken = response.data.data?.refreshToken;
+
+      console.log("Access Token:", accessToken);
+      console.log("Refresh Token:", refreshToken);
+
+      // Optionally store tokens in localStorage or sessionStorage
+      if (accessToken && refreshToken) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+      }
+
+      alert("Successfully Logged In");
+      navigate("/dashboard");
     } catch (err) {
       const errorMessage = err.response
         ? err.response.data.message
@@ -42,19 +58,20 @@ function Login() {
       alert(errorMessage);
     }
   };
+  
   return (
     <div style={{ display: "flex" }}>
       <div className="login-register-page-image"></div>
-      <div className="login-register-div" style={{marginTop:'150px'}}>
+      <div className="login-register-div" style={{ marginTop: '150px' }}>
         <h1>Note app</h1>
         <h3>Login</h3>
         <p>Login to your Note account.</p>
         <label>Email</label>
-        <form onSubmit={Login_user}>
+        <form onSubmit={loginUser}>
           <input
             type="text"
             value={email}
-            onChange={handle_email}
+            onChange={handleEmail}
             placeholder="Your email address"
           ></input>
           <br></br>
@@ -62,19 +79,17 @@ function Login() {
           <br></br>
 
           <input
-            type="text"
+            type="password"
             value={password}
-            onChange={Handle_password}
+            onChange={handlePassword}
             placeholder="Your password"
           ></input>
           <br></br>
 
           <button type="submit">Login</button>
         </form>
-        <p style={{cursor:'pointer'}} onClick={Gotoregister}>Don't have a account?Go to register</p>
-
+        <p style={{ cursor: 'pointer' }} onClick={goToRegister}>Don't have an account? Go to register</p>
       </div>
-
     </div>
   );
 }

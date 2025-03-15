@@ -6,7 +6,6 @@ function Add_note() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const accessToken = sessionStorage.getItem("accessToken");
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -14,62 +13,33 @@ function Add_note() {
   const handleTitleChange = (event) => setTitle(event.target.value);
   const handleContentChange = (event) => setContent(event.target.value);
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5002/api/users/currentUser",
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        setUser(response.data);
-        setLoading(false);
-      } catch (err) {
-        const errorMessage = err.response
-          ? err.response.data.message
-          : "An error occurred";
-        setError(errorMessage);
-        setLoading(false);
-      }
-    };
-
-    if (accessToken) {
-      fetchDetails();
-    } else {
-      setError("No access token found. Please log in.");
-      setLoading(false);
-    }
-  }, [accessToken]);
-
-  const Addnote = async (event) => {
-
-    if (!user) {
-      alert("User not logged in yet");
-      return;
-    }
-
+  const AddNote = async (event) => {
+  
     const data = {
       title,
       content,
-      userId: user.id,
     };
-
+  
     try {
-      await axios.post("http://localhost:5002/api/Notes/add-note", data);
-      await sendEmail();
-      console("Note added successfully and email sent!");
+      const response = await axios.post(
+        "http://localhost:3000/api/Notes/add-note",
+        data,
+        { withCredentials: true } // Ensures cookies (access token) are sent
+      );
+  
+      console.log("Note added successfully:", response.data);
+      
+      // await sendEmail();
+      console.log("Email sent successfully!");
+  
       setTitle("");
       setContent("");
     } catch (err) {
-      const errorMessage = err.response
-        ? err.response.data.message
-        : "An error occurred";
-      alert(errorMessage);
+      console.error("Error adding note:", err.response?.data?.message || err.message);
+      alert(err.response?.data?.message || "An error occurred while adding the note.");
     }
   };
+  
 
   const sendEmail = async () => {
     if (!user) {
@@ -100,12 +70,10 @@ function Add_note() {
 
   return (
     <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
+      {error ? (
         <p className="error-message">{error}</p>
       ) : (
-        <form onSubmit={Addnote} className="add-note-form">
+        <form onSubmit={AddNote} className="add-note-form">
           <p>ADD YOUR NOTE</p>
           <label>TITLE</label>
           <input
