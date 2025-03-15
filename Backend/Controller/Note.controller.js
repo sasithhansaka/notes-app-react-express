@@ -76,7 +76,7 @@ const deletenote = async (req, res, next) => {
       });
     }
 
-    await note.delete();
+    await note.deleteOne();
 
     res.status(HttpStatus.OK).json({
       success: true,
