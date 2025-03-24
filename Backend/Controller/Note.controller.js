@@ -62,7 +62,7 @@ const createNote = async (req, res, next) => {
 };
 
 
-const deletenote = async (req, res, next) => {
+const deleteNote = async (req, res, next) => {
   const userId = req.user._id;
   const { noteId } = req.body;
 
@@ -87,4 +87,4 @@ const deletenote = async (req, res, next) => {
   }
 };
 
-export { selectNotes, createNote, deletenote };
+export { selectNotes, createNote, deleteNote };
