@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./MIddlewear/erorrhandler.middlewear.js";
 import dotenv from 'dotenv';
 import cors from 'cors';
-
-
+import setupSwagger from "./Config/swaggerConfig.js";
 import UserRouter from "./Routes/user.routes.js";
 import NoteRouter from "./Routes/note.routes.js";
 import emailRoutes from "./Routes/email.routes.js";
+
 const app = express();
+
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true, 
@@ -19,15 +20,15 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); 
-
-
-
 dotenv.config();
+
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/users", UserRouter);
+
 app.use("/api/Notes", NoteRouter);
+
 app.use("/api/emails", emailRoutes);
 
 app.get("/", (req, res) => {
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
 });
 
 app.use(errorHandler);
+
+setupSwagger(app);
 
 const startServer = async () => {
   try {
@@ -44,6 +47,7 @@ const startServer = async () => {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
     });
   } catch (error) {
     console.error("MongoDB connection failed:", error);
