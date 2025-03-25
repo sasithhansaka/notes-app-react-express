@@ -7,7 +7,7 @@ import cors from 'cors';
 import setupSwagger from "./Config/swaggerConfig.js";
 import UserRouter from "./Routes/user.routes.js";
 import NoteRouter from "./Routes/note.routes.js";
-import emailRoutes from "./Routes/email.routes.js";
+import EmailRouter from "./Routes/email.routes.js";
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use("/api/users", UserRouter);
 
 app.use("/api/Notes", NoteRouter);
 
-app.use("/api/emails", emailRoutes);
+app.use("/api/emails", EmailRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

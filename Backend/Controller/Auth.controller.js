@@ -1,5 +1,5 @@
 import HttpStatus from "../constants/HttpStatus.js";
-import { hashpassword } from "../utils/hashUtils.js"; 
+import { hashpassword } from "../utils/hashUtils.js";
 import issueJwt from "../utils/jwtUtils.js";
 import UserModel from "../Modles/User.model.js";
 import { checkPassword } from "../utils/hashUtils.js";
@@ -25,31 +25,35 @@ const registerUser = async (req, res, next) => {
       salt,
     });
 
-    const { access_token, refresh_Token } = issueJwt(newUser._id, newUser.Full_name);
+    const { access_token, refresh_Token } = issueJwt(
+      newUser._id,
+      newUser.Full_name
+    );
 
     res.cookie("accessToken", access_token, {
       httpOnly: true,
-      maxAge: 900000,
-      sameSite: "Strict",
-      secure: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "Lax", // Changed from Strict to Lax for development
+      secure: false,
     });
 
     res.cookie("refreshToken", refresh_Token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      sameSite: "Strict",
-      secure: true,
+      sameSite: "Lax", // Changed from Strict to Lax for development
+      secure: false,
     });
 
     res.status(HttpStatus.CREATED).json({
       success: true,
       message: "User registered successfully",
+      accessToken: access_token,
+      refreshToken: refresh_Token,
     });
   } catch (err) {
     next(err);
   }
 };
-
 
 const LoginUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -79,23 +83,23 @@ const LoginUser = async (req, res, next) => {
 
     const { access_token, refresh_Token } = issueJwt(user._id, user.Full_name);
 
-     // Modified cookie settings for development environment
-     res.cookie("accessToken", access_token, {
-      httpOnly: true, 
-      maxAge: 900000, 
-      sameSite: "Lax",  // Changed from Strict to Lax for development
-      secure: false,    // Changed to false for HTTP in development
+    // Modified cookie settings for development environment
+    res.cookie("accessToken", access_token, {
+      httpOnly: true,
+      maxAge: 900000,
+      sameSite: "Lax", // Changed from Strict to Lax for development
+      secure: false, // Changed to false for HTTP in development
       // path: "/"         // Explicitly set path
     });
-    
+
     res.cookie("refreshToken", refresh_Token, {
-      httpOnly: true, 
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
-      sameSite: "Lax",  // Changed from Strict to Lax for development
-      secure: false,    // Changed to false for HTTP in development
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "Lax", // Changed from Strict to Lax for development
+      secure: false, // Changed to false for HTTP in development
       // path: "/"         // Explicitly set path
     });
-    
+
     res.status(HttpStatus.OK).json({
       success: true,
       message: "Login successful",
@@ -111,8 +115,6 @@ const LoginUser = async (req, res, next) => {
     next(err);
   }
 };
-
-
 
 // const currentUser = asyncHandler(async (req, res) => {
 //   res.send(req.user);
@@ -137,13 +139,12 @@ const logout = async (req, res, next) => {
 };
 
 const currentUser = async (req, res, next) => {
-    const userId = req.user._id;
+  const userId = req.user._id;
 
   try {
-
     const user = await UserModel.findById(userId);
 
-    if(!user){
+    if (!user) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         success: false,
         message: "No user found",
@@ -155,15 +156,9 @@ const currentUser = async (req, res, next) => {
       success: true,
       data: user,
     });
-
-  }
-  catch(err){
+  } catch (err) {
     next(err);
   }
+};
 
-}
-    
-
-
-
-export { registerUser, LoginUser, logout  ,currentUser };
+export { registerUser, LoginUser, logout, currentUser };
