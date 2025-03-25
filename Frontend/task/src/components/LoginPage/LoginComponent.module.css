@@ -1,0 +1,60 @@
+.loginComponent{
+    margin-left: 150px;
+    margin-top: 100px;
+}
+
+.loginComponent h1{
+    font-family: "Poppins", sans-serif;
+    font-size: 34px;      
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.loginComponent  h3 {
+    font-family: "Poppins", sans-serif;
+    font-size: 34px;      
+    font-weight: 400;
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.loginComponent p{
+    font-family: "Poppins", sans-serif;
+    color: #6d6a6a;
+    margin-bottom: 30px;
+}
+
+.loginComponent label{
+    margin-top: 30px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.loginComponent input[type='text']{
+    width: 350px;
+    height: 40px;
+    border-radius: 19px;
+    border: 1px solid #7b7474;
+    padding-left: 18px;
+    background-color: #000000;
+    color: #918f8f;
+    font-size: 15px;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 20px;
+    margin-top: 7px;
+}
+
+.loginComponent button{
+    width: 350px;
+    height: 40px;
+    border-radius: 19px;
+    border: 1px solid #7b7474;
+    padding-left: 18px;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 15px;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 20px;
+    margin-top: 7px;
+    cursor: pointer;
+}
