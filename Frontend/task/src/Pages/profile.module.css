@@ -1,0 +1,34 @@
+.profileBanner{
+    width: 800px;
+    height: 800px;
+    background-color: rgb(201, 201, 201);
+}
+
+.profileDetails{
+    padding-left: 230px;
+}
+
+.profileDetails p{
+    font-size: 20px;
+    color: #ffffff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.profileDetails h1{
+    color: #ffffff;
+}
+
+.profileDetails button{
+    width: 250px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4c4b4b;
+    color: #ffffff;
+    font-size: larger;
+    text-transform: uppercase;
+    cursor: pointer;
+
+}

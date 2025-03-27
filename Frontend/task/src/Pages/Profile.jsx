@@ -2,44 +2,42 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./Profile.module.css";
+
 function Profile() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        setLoading(true);
         const response = await axios.get(
-          "http://localhost:3000/api/users/currentUser",
+          "http://localhost:3000/api/users/current-user",
           {
             withCredentials: true,
           }
         );
         setUser(response.data.data);
-        console.log(response.data);
+        console.log(user.Full_name);
         setError(null);
       } catch (err) {
-        setError(
-          err.response?.data?.message || "Failed to fetch user details."
+        console.error(
+          "Error fetching notes:",
+          err.response?.data?.message || err.message
         );
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchDetails();
-  }, []); 
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://localhost:3000/api/users/logout",
-        { withCredentials: true }
-      );
+      await axios.post("http://localhost:3000/api/users/logout", {
+        withCredentials: true,
+      });
       alert("Logged out successfully");
       navigate("/");
     } catch (err) {
@@ -53,12 +51,12 @@ function Profile() {
 
   return (
     <div style={{ display: "flex" }}>
-      <div className="login-register-page-image"></div>
-      <div className="login-register-div" style={{ marginTop: "150px" }}>
+      <div className={styles.profileBanner}></div>
+      <div className={styles.profileDetails} style={{ marginTop: "150px" }}>
         <img
           style={{
-            width: "200px",
-            height: "200px",
+            width: "150px",
+            height: "150px",
             objectFit: "cover",
             borderRadius: "90%",
           }}
@@ -68,16 +66,13 @@ function Profile() {
 
         <h1>MY ACCOUNT</h1>
 
-        {loading ? (
-          <p>Loading profile information...</p>
-        ) : error ? (
+        { error ? (
           <p>Error: {error}</p>
         ) : user ? (
           <div>
-            <p>Full_name: {user.Full_name?.split(" ")[0] || "N/A"}</p>
-            {/* <p>Last Name: {user.Full_name?.split(" ")[1] || "N/A"}</p> */}
+            <p>Name: {user.Full_name || "N/A"}</p>
             <p>Email: {user.email || "N/A"}</p>
-            <button onClick={GotoHomepage}>HOME</button>
+            {/* <button onClick={GotoHomepage}>HOME</button> */}
           </div>
         ) : (
           <p>No user information available</p>
