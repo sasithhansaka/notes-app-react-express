@@ -1,0 +1,52 @@
+.noteExample {
+  width: 260px;
+  height: 380px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  opacity: 0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  animation: rotateOnce 5s ease-in-out infinite;
+  margin-top: 40px;
+  margin-right: 20px;
+  padding: 20px;
+}
+
+  
+  /* Keyframes for 360 Rotation, Scaling, and Pause */
+  @keyframes rotateOnce {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) rotateY(0deg);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1) rotateY(360deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotateY(360deg);
+    }
+  }
+  
+  .noteExample img {
+    width: 50px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+  }
+  
+  .noteExample p {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .noteExample h5 {
+    margin-top: 20px;
+    color: #668cb6;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+  }
