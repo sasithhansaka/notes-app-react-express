@@ -66,15 +66,7 @@ function NoteList({ notes, handleDeleteNote }) {
           >
             NO NOTES FOUND.
           </p>
-          {/* <img
-            style={{
-              objectFit: "contain",
-              width: "50px",
-              height: "40px",
-              marginTop: "90px",
-            }}
-            src="./src/images/Lost and Found.png"
-          /> */}
+          
         </div>
       )}
     </div>

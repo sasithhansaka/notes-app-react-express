@@ -1,0 +1,20 @@
+.noteAdd_Form {
+  background-color: #111111;
+  border: 1px solid #111111;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  margin: 20px auto;
+  height: 440px;
+}
+
+.noteAdd_Form label{
+  color: aliceblue;
+}
+
+.noteAdd_Form p{
+  color: aliceblue;
+  font-size: 30px;
+  font-weight: 500;
+}
