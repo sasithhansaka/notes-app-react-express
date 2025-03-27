@@ -8,6 +8,13 @@
     padding-left: 230px;
 }
 
+.profileDetails i{
+    color: #ffffff;
+    font-size: 80px;
+    margin: 20px 60px;
+    
+}
+
 .profileDetails p{
     font-size: 20px;
     color: #ffffff;
@@ -25,7 +32,7 @@
     height: 40px;
     border-radius: 5px;
     border: none;
-    background-color: #4c4b4b;
+    background-color: #111111;
     color: #ffffff;
     font-size: larger;
     text-transform: uppercase;

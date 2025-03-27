@@ -53,20 +53,11 @@ function Profile() {
     <div style={{ display: "flex" }}>
       <div className={styles.profileBanner}></div>
       <div className={styles.profileDetails} style={{ marginTop: "150px" }}>
-        <img
-          style={{
-            width: "150px",
-            height: "150px",
-            objectFit: "cover",
-            borderRadius: "90%",
-          }}
-          src="./src/images/profile_photo.jpg"
-          alt="Profile"
-        />
+        <i class="fa-solid fa-user-tie"></i>
 
-        <h1>MY ACCOUNT</h1>
+        <h1>MY PROFILE</h1>
 
-        { error ? (
+        {error ? (
           <p>Error: {error}</p>
         ) : user ? (
           <div>
