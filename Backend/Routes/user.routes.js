@@ -1,5 +1,6 @@
 import express from "express";
-import {registerUser, LoginUser, logout} from "../Controller/Auth.controller.js";
+import {registerUser, LoginUser, logout,currentUser} from "../Controller/Auth.controller.js";
+import { authenticateUser } from "../MIddlewear/auth.middlwear.js";
 
 const UserRouter = express.Router();
 
@@ -79,5 +80,8 @@ UserRouter.post("/login", LoginUser);
  *         description: Successfully logged out
  */
 UserRouter.post("/logout", logout);
+
+
+UserRouter.get("/current-user",authenticateUser,currentUser);
 
 export default UserRouter;

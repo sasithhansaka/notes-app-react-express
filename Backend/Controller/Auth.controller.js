@@ -142,7 +142,7 @@ const currentUser = async (req, res, next) => {
   const userId = req.user._id;
 
   try {
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findOne(userId);
 
     if (!user) {
       return res.status(HttpStatus.BAD_REQUEST).json({

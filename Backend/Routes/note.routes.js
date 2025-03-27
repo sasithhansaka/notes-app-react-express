@@ -104,7 +104,7 @@ NoteRouter.get("/get-notes", authenticateUser, selectNotes);
  *       401:
  *         description: Unauthorized
  */
-NoteRouter.delete("/delete-note/:id", authenticateUser, deleteNote); 
+NoteRouter.delete("/delete-note", authenticateUser, deleteNote); 
 
 
 
