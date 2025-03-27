@@ -1,0 +1,26 @@
+.inputField {
+  width: 400px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  padding-left: 18px;
+  background-color: #ffffffc3;
+  color: #000000;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 20px;
+  margin-top: 7px;
+}
+
+.textArea {
+  width: 400px;
+  border-radius:5px;
+  border: 1px solid #000000;
+  padding-left: 18px;
+  background-color: #ffffffc3;
+  color: #000000;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 5px;
+  margin-top: 7px;
+}

@@ -1,0 +1,30 @@
+.buttonGroup button {
+    padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 5px;
+}
+
+.buttonGroup .nodeAdd_button {
+    background-color: #323232;
+    color: white;
+}
+
+.buttonGroup .nodeAdd_button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.buttonGroup .viewCalender_button {
+    background-color: #323232;
+    color: white;
+}
+
+.buttonGroup .viewCalender_button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+
+}
