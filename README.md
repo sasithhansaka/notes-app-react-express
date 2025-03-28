@@ -2,7 +2,9 @@
 
 Welcome to the Notes App, a full-stack application built with React and Express. This app allows users to create, update, delete, and view notes seamlessly. It also includes JWT authentication and email notifications for note additions.
 
-![Demo Video](https://github.com/sasithhansaka/notes-app-react-express/issues/1#issue-2955910351)
+<video controls>
+  <source src="https://github.com/sasithhansaka/notes-app-react-express/issues/1#issue-2955910351" type="video/mp4">
+</video>
 
 ## Overview
 The Notes App is designed to provide a smooth and efficient way to manage notes. It supports user authentication using JWT, allowing each user to have their own set of notes. The app sends email notifications when a new note is added.
